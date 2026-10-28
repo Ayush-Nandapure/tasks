@@ -1,0 +1,14 @@
+# Local Database (Keep your personal tasks out of the repository)
+task.json
+
+# Environment Variables (Keep file paths and potential secrets safe)
+.env
+
+# Python Cache Files (Automatically generated, no need to track)
+__pycache__/
+*.pyc
+
+# Virtual Environments (If you decide to use one later)
+venv/
+env/
+.venv/
