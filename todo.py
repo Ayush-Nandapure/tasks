@@ -3,31 +3,28 @@ import datetime
 import json
 
 
-
-
-
 def add(t):
+    tasks = {}
     try:
-        tasks = {}
         with open("task.json", "r") as f:
             tasks = json.load(f)
-            maximum = 0
-            for t2 in tasks.values():
-                maximum = max(maximum, t2["id"])
-            t1 = {
-            "id" : maximum+1,
-            "status" : "created",
-            "task" : t,
-            "created_at": str(datetime.datetime.now()),
-            "updated_at" : None
-            }
-            tasks[str(t1["id"])] = t1
-            with open("task.json", "w") as f1:
-                json.dump(tasks, f1, indent = 4)
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        with open("task.json", "w") as f1:
-            json.dump(tasks, f1, indent = 4)
+    except FileNotFoundError:
+        pass
+
+    maximum = 0
+    for t2 in tasks.values():
+        maximum = max(maximum, t2["id"])
+        
+    t1 = {
+        "id" : maximum + 1,
+        "status" : "created",
+        "task" : t,
+        "created_at": str(datetime.datetime.now()),
+        "updated_at" : None
+    }
+    tasks[str(t1["id"])] = t1
+    with open("task.json", "w") as f1:
+        json.dump(tasks, f1, indent=4)
         
 
 
@@ -125,14 +122,42 @@ def list_tasks(i):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+parser = argparse.ArgumentParser(description= "for todo")
 
-if __name__ == "__main__" :
-    add("complete assignment")
-    list_tasks(1)
-    update(1, "complete pns")
-    list_tasks(1)
-    mark(1, 2)
-    list_tasks(1)
-    mark(1,1)
-    list_tasks(1)
+subparser = parser.add_subparsers(dest = "command")
+
+add_t = subparser.add_parser("add")
+add_t.add_argument("task")
+
+update_t = subparser.add_parser("update")
+update_t.add_argument("id")
+update_t.add_argument("task")
+
+delete_t = subparser.add_parser("delete")
+delete_t.add_argument("id")
+
+mark_t = subparser.add_parser("mark")
+mark_t.add_argument("id")
+mark_t.add_argument("status")
+
+list_t = subparser.add_parser("list")
+list_t.add_argument("filter",nargs = '?')
+
+args = parser.parse_args()
+
+if(args.command == "add"):
+    add(args.task)
+elif(args.command == "update"):
+    update(args.id, args.task)
+elif(args.command == "delete"):
+    delete(args.id)
+elif(args.command == "mark"):
+    i = 1 if (args.status == "done") else 2
+    mark({args.id}, i)
+elif(args.command == "list"):
+    i = 1 if(args.filter is None) else (2 if {args.filter == "done"} else 3)
+    list_tasks(i)
+else:
+    print("INVALID COMMAND!!")
+
 
