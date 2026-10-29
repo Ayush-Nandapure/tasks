@@ -89,11 +89,10 @@ def list_tasks(i):
         if(i == 1):
             for t in tasks.values():
                 print(f'''
-    taskid      : {t["id"]}
-    status      : {t["status"]}
-    task        : {t["task"]}
-    created     : {t['created_at']}
-    ''')
+taskid      : {t["id"]}
+status      : {t["status"]}
+task        : {t["task"]}
+created     : {t['created_at']}''')
                 if(t["updated_at"] != None):
                     print(f"last updated: {t["updated_at"]}")
                 print("")
@@ -101,10 +100,9 @@ def list_tasks(i):
             for t in tasks.values():
                 if(t["status"] == "done"):
                     print(f'''
-    taskid      : {t["id"]}
-    task        : {t["task"]}
-    created     : {t['created_at']}
-    ''')
+taskid      : {t["id"]}
+task        : {t["task"]}
+created     : {t['created_at']}''')
                     if(t["updated_at"] != None):
                         print(f"last updated: {t["updated_at"]}")
                 print("")
@@ -112,10 +110,9 @@ def list_tasks(i):
             for t in tasks.values():
                 if(t["status"] == "in progress"):
                     print(f'''
-    taskid      : {t["id"]}
-    task        : {t["task"]}
-    created     : {t['created_at']}
-    ''')
+taskid      : {t["id"]}
+task        : {t["task"]}
+created     : {t['created_at']}''')
                     if(t["updated_at"] != None):
                         print(f"last updated: {t["updated_at"]}")
                 print("") 
@@ -153,9 +150,9 @@ elif(args.command == "delete"):
     delete(args.id)
 elif(args.command == "mark"):
     i = 1 if (args.status == "done") else 2
-    mark({args.id}, i)
+    mark(args.id, i)
 elif(args.command == "list"):
-    i = 1 if(args.filter is None) else (2 if {args.filter == "done"} else 3)
+    i = 1 if(args.filter is None) else (2 if args.filter == "done" else 3)
     list_tasks(i)
 else:
     print("INVALID COMMAND!!")
